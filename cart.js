@@ -1,3 +1,22 @@
+const datetimeEl = document.getElementById("datetime");
+function updateClock() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("en-US", {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+  const timeStr = now.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  datetimeEl.textContent = `${dateStr}  •  ${timeStr}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
 (() => {
   "use strict";
 
