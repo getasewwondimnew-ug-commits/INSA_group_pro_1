@@ -113,6 +113,39 @@ main {
   scroll-margin-top: 100px;
 }
 
+.sort-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 40px;
+}
+
+.btn-sort {
+  font-family: "Inter", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #111111;
+  background-color: #ffffff;
+  border: 1px solid #111111;
+  padding: 10px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.15s ease;
+}
+
+.btn-sort:hover {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+.btn-sort:active {
+  transform: scale(0.97);
+}
+
 .section-title {
   font-family: "Playfair Display", serif;
   font-size: 1.6rem;

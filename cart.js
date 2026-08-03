@@ -2,6 +2,7 @@
   const KEY = "abyssinianCart";
   const DELIVERY = 4, TAX = 0.08, DISCOUNT_MIN = 50, DISCOUNT_RATE = 0.1, TOAST_MS = 2200;
   let toastTimer = null;
+  let sortAscending = true;
 
   const $ = (id) => document.getElementById(id);
   const money = (n) => `ETB ${n.toFixed(2)}`;
@@ -49,6 +50,41 @@
     showToast(`${item.name} added to cart`);
   };
 
+  const cardFor = (btn) => {
+    let el = btn;
+    while (el.parentElement && el.parentElement.querySelectorAll(".btn-add").length === 1) {
+      el = el.parentElement;
+    }
+    return el;
+  };
+
+  const sortMenuByPrice = (ascending) => {
+    const groups = new Map();
+
+    document.querySelectorAll(".btn-add").forEach((btn) => {
+      const card = cardFor(btn);
+      const container = card.parentElement;
+      if (!groups.has(container)) groups.set(container, []);
+      groups.get(container).push({ card, price: parseFloat(btn.dataset.price) });
+    });
+
+    groups.forEach((items, container) => {
+      items.sort((a, b) => (ascending ? a.price - b.price : b.price - a.price));
+      items.forEach(({ card }) => container.appendChild(card));
+    });
+  };
+
+  const initSortButton = () => {
+    const sortBtn = $("sort-price");
+    if (!sortBtn) return;
+    sortBtn.textContent = "Sort: Price ↑";
+    sortBtn.addEventListener("click", () => {
+      sortMenuByPrice(sortAscending);
+      sortBtn.textContent = sortAscending ? "Sort: Price ↓" : "Sort: Price ↑";
+      sortAscending = !sortAscending;
+    });
+  };
+
   const initMenuPage = () => {
     const buttons = document.querySelectorAll(".btn-add");
     if (!buttons.length) return false;
@@ -58,6 +94,7 @@
         addToCart({ id, name, desc, price: parseFloat(price), img, qty: 1 });
       });
     });
+    initSortButton();
     return true;
   };
 
