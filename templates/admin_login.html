@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — Abyssinian Meal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    .login-wrap {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .login-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 44px 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+    .login-card h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 1.8rem;
+      color: #111;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .login-card p.sub {
+      text-align: center;
+      font-size: .85rem;
+      color: #888;
+      margin-bottom: 32px;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      transition: border-color .2s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #111;
+    }
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: .9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      cursor: pointer;
+      transition: background .2s;
+      margin-top: 8px;
+    }
+    .btn-login:hover { background: #333; }
+    .error-msg {
+      background: #fdecea;
+      color: #c0392b;
+      border: 1px solid #f5c6cb;
+      padding: 11px 14px;
+      border-radius: 4px;
+      font-size: .88rem;
+      margin-bottom: 18px;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('home') }}" class="logo">abyssinian meal</a>
+    </div>
+  </nav>
+
+  <div class="login-wrap">
+    <div class="login-card">
+      <h2>Admin Login</h2>
+      <p class="sub">Sign in to manage orders and menu</p>
+
+      <div id="error-msg" class="error-msg"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="admin" required autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn-login" id="login-btn">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Redirect if already logged in
+    if (localStorage.getItem('admin_token')) {
+      window.location.href = '/admin/orders';
+    }
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('login-btn');
+      const errEl = document.getElementById('error-msg');
+      btn.textContent = 'Signing in…';
+      btn.disabled = true;
+      errEl.classList.remove('show');
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Login failed');
+
+        localStorage.setItem('admin_token', data.token);
+        localStorage.setItem('admin_user', JSON.stringify(data.admin));
+        window.location.href = '/admin/orders';
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.classList.add('show');
+        btn.textContent = 'Sign In';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

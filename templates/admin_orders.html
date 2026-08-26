@@ -1,386 +1,245 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Orders Management</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-    <style>
-        body {
-            background-color: #f5f5f5;
-        }
-        .admin-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            border-bottom: 2px solid #d4af37;
-            padding-bottom: 20px;
-        }
-        .admin-header h1 {
-            font-size: 2.5rem;
-            color: #333;
-            font-family: "Playfair Display", serif;
-        }
-        .admin-header a {
-            background-color: #d4af37;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        .admin-header a:hover {
-            background-color: #b8941f;
-        }
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .orders-table thead {
-            background-color: #333;
-            color: white;
-        }
-        .orders-table th {
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-        }
-        .orders-table td {
-            padding: 15px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .orders-table tbody tr:hover {
-            background-color: #f9f9f9;
-        }
-        .order-id {
-            font-weight: 600;
-            color: #d4af37;
-        }
-        .status {
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        .status.pending {
-            background-color: #ffc107;
-            color: #333;
-        }
-        .status.confirmed {
-            background-color: #2196F3;
-            color: white;
-        }
-        .status.completed {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .status.cancelled {
-            background-color: #f44336;
-            color: white;
-        }
-        .order-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .order-actions form {
-            display: inline;
-        }
-        .btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: background-color 0.3s;
-        }
-        .btn-confirm {
-            background-color: #2196F3;
-            color: white;
-        }
-        .btn-confirm:hover {
-            background-color: #0b7dda;
-        }
-        .btn-complete {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .btn-complete:hover {
-            background-color: #45a049;
-        }
-        .btn-cancel {
-            background-color: #ff9800;
-            color: white;
-        }
-        .btn-cancel:hover {
-            background-color: #fb8c00;
-        }
-        .btn-delete {
-            background-color: #f44336;
-            color: white;
-        }
-        .btn-delete:hover {
-            background-color: #d32f2f;
-        }
-        .btn-view {
-            background-color: #9C27B0;
-            color: white;
-        }
-        .btn-view:hover {
-            background-color: #7b1fa2;
-        }
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
-        .empty-state p {
-            font-size: 1.2rem;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        .modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-        .modal-header {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .modal-close {
-            float: right;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #999;
-        }
-        .modal-close:hover {
-            color: #333;
-        }
-        .order-details {
-            margin-bottom: 20px;
-        }
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .detail-label {
-            font-weight: 600;
-            color: #333;
-        }
-        .detail-value {
-            color: #666;
-        }
-        .items-list {
-            background-color: #f5f5f5;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .item {
-            padding: 8px 0;
-            border-bottom: 1px solid #ddd;
-        }
-        .item:last-child {
-            border-bottom: none;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Orders</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    body { background: #f5f5f5; }
+    .admin-wrap { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+    .admin-top {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2px solid #d4af37; padding-bottom: 18px; margin-bottom: 32px;
+    }
+    .admin-top h1 { font-family:"Playfair Display",serif; font-size:2rem; color:#333; }
+    .admin-top-links { display:flex; gap:12px; }
+    .btn-gold {
+      background:#d4af37; color:#fff; padding:9px 18px; border-radius:4px;
+      text-decoration:none; font-size:.85rem; font-weight:500; border:none; cursor:pointer;
+      text-transform:uppercase; letter-spacing:.06em; transition:background .2s;
+    }
+    .btn-gold:hover { background:#b8941f; }
+    .btn-danger {
+      background:#e53935; color:#fff; padding:6px 12px; border-radius:4px;
+      border:none; cursor:pointer; font-size:.8rem; transition:background .2s;
+    }
+    .btn-danger:hover { background:#c62828; }
+    .btn-sm {
+      padding:5px 10px; border:none; border-radius:4px; cursor:pointer;
+      font-size:.78rem; font-weight:500; transition:background .2s;
+    }
+    .btn-confirm  { background:#1976d2; color:#fff; }
+    .btn-confirm:hover  { background:#1565c0; }
+    .btn-complete { background:#388e3c; color:#fff; }
+    .btn-complete:hover { background:#2e7d32; }
+    .btn-cancel   { background:#f57c00; color:#fff; }
+    .btn-cancel:hover   { background:#e65100; }
+    .btn-view     { background:#7b1fa2; color:#fff; }
+    .btn-view:hover     { background:#6a1b9a; }
+
+    table { width:100%; border-collapse:collapse; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.08); }
+    thead { background:#222; color:#fff; }
+    th,td { padding:13px 14px; text-align:left; }
+    td { border-bottom:1px solid #eee; font-size:.9rem; }
+    tbody tr:hover { background:#fafafa; }
+    .status {
+      display:inline-block; padding:3px 10px; border-radius:20px;
+      font-size:.78rem; font-weight:600; text-transform:uppercase;
+    }
+    .status.pending  { background:#ffc107; color:#333; }
+    .status.confirmed{ background:#1976d2; color:#fff; }
+    .status.completed{ background:#388e3c; color:#fff; }
+    .status.cancelled{ background:#e53935; color:#fff; }
+    .actions { display:flex; gap:6px; flex-wrap:wrap; }
+    .order-id { font-weight:700; color:#d4af37; }
+    .empty { text-align:center; padding:60px; color:#999; font-size:1.1rem; }
+
+    /* Modal */
+    .modal-bg {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,.5);
+      z-index:2000; align-items:center; justify-content:center;
+    }
+    .modal-bg.open { display:flex; }
+    .modal-box {
+      background:#fff; border-radius:8px; padding:32px;
+      max-width:560px; width:100%; max-height:80vh; overflow-y:auto;
+      box-shadow:0 8px 32px rgba(0,0,0,.2);
+    }
+    .modal-box h3 { font-size:1.3rem; margin-bottom:18px; color:#333; font-family:"Playfair Display",serif; }
+    .detail-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee; font-size:.9rem; }
+    .detail-row:last-child { border-bottom:none; }
+    .detail-label { font-weight:600; color:#555; }
+    .item-line { padding:7px 0; border-bottom:1px solid #f0f0f0; font-size:.88rem; }
+    .close-btn { float:right; background:none; border:none; font-size:1.4rem; cursor:pointer; color:#999; }
+    .close-btn:hover { color:#333; }
+    .admin-info { font-size:.85rem; color:#888; }
+    .admin-info strong { color:#333; }
+  </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="{{ url_for('home') }}" class="logo">abyssinian meal</a>
-            <ul class="nav-links">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('admin_orders') }}">Admin Orders</a></li>
-                <li><a href="{{ url_for('admin_add') }}">Add Order</a></li>
-            </ul>
-        </div>
-    </nav>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('home') }}" class="logo">abyssinian meal</a>
+      <ul class="nav-links" id="admin-nav" style="display:none">
+        <li><a href="{{ url_for('admin_orders_page') }}">Orders</a></li>
+        <li><a href="{{ url_for('admin_menu_page') }}">Menu Items</a></li>
+        <li><a href="#" id="logout-link">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
 
-    <div class="admin-container">
-        <div class="admin-header">
-            <h1>Order Management</h1>
-            <a href="{{ url_for('admin_add') }}">+ Add New Order</a>
-        </div>
-
-        {% if orders %}
-        <table class="orders-table">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Total Price</th>
-                    <th>Quantity</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
-                <tr>
-                    <td><span class="order-id">#{{ order.id }}</span></td>
-                    <td>{{ order.customer_name }}</td>
-                    <td>${{ "%.2f"|format(order.total_price) }}</td>
-                    <td>{{ order.quantity }}</td>
-                    <td><span class="status {{ order.status }}">{{ order.status.upper() }}</span></td>
-                    <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
-                    <td>
-                        <div class="order-actions">
-                            <button class="btn btn-view" onclick="viewOrder('{{ order.id }}')">View</button>
-                            
-                            {% if order.status != 'confirmed' %}
-                            <form method="POST" action="{{ url_for('update_order_status', order_id=order.id) }}" style="display:inline;">
-                                <input type="hidden" name="status" value="confirmed">
-                                <button type="submit" class="btn btn-confirm">Confirm</button>
-                            </form>
-                            {% endif %}
-                            
-                            {% if order.status != 'completed' and order.status != 'cancelled' %}
-                            <form method="POST" action="{{ url_for('update_order_status', order_id=order.id) }}" style="display:inline;">
-                                <input type="hidden" name="status" value="completed">
-                                <button type="submit" class="btn btn-complete">Complete</button>
-                            </form>
-                            {% endif %}
-                            
-                            {% if order.status != 'cancelled' %}
-                            <form method="POST" action="{{ url_for('cancel_order', order_id=order.id) }}" style="display:inline;">
-                                <button type="submit" class="btn btn-cancel" onclick="return confirm('Cancel this order?')">Cancel</button>
-                            </form>
-                            {% endif %}
-                            
-                            <form method="POST" action="{{ url_for('delete_order', order_id=order.id) }}" style="display:inline;">
-                                <button type="submit" class="btn btn-delete" onclick="return confirm('Delete this order permanently?')">Delete</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="empty-state">
-            <p>No orders yet.</p>
-            <a href="{{ url_for('admin_add') }}" style="color: #d4af37; text-decoration: none;">Create the first order</a>
-        </div>
-        {% endif %}
+  <div class="admin-wrap">
+    <div class="admin-top">
+      <div>
+        <h1>Order Management</h1>
+        <p class="admin-info">Logged in as: <strong id="admin-name">—</strong></p>
+      </div>
+      <div class="admin-top-links">
+        <a href="{{ url_for('admin_menu_page') }}" class="btn-gold">Manage Menu</a>
+      </div>
     </div>
 
-    <!-- Order Details Modal -->
-    <div id="orderModal" class="modal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <div class="modal-header">Order Details</div>
-            <div id="orderDetails"></div>
-        </div>
+    <div id="orders-container">
+      <p style="text-align:center;color:#999;padding:40px">Loading orders…</p>
     </div>
+  </div>
 
-    <script>
-        function viewOrder(orderId) {
-            orderId = parseInt(orderId, 10);
-            fetch(`/api/order/${orderId}`)
-                .then(response => response.json())
-                .then(data => {
-                    const order = data.order;
-                    const items = JSON.parse(order.items);
-                    
-                    let itemsHtml = '';
-                    items.forEach(item => {
-                        itemsHtml += `
-                            <div class="item">
-                                <strong>${item.name}</strong> x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}
-                            </div>
-                        `;
-                    });
-                    
-                    const detailsHtml = `
-                        <div class="order-details">
-                            <div class="detail-row">
-                                <span class="detail-label">Order ID:</span>
-                                <span class="detail-value">#${order.id}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Customer:</span>
-                                <span class="detail-value">${order.customer_name}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Total Quantity:</span>
-                                <span class="detail-value">${order.quantity}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Total Price:</span>
-                                <span class="detail-value">$${order.total_price.toFixed(2)}</span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Status:</span>
-                                <span class="detail-value"><span class="status ${order.status}">${order.status.toUpperCase()}</span></span>
-                            </div>
-                            <div class="detail-row">
-                                <span class="detail-label">Date:</span>
-                                <span class="detail-value">${new Date(order.created_at).toLocaleString()}</span>
-                            </div>
-                            <div class="detail-label">Items:</div>
-                            <div class="items-list">
-                                ${itemsHtml}
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.getElementById('orderDetails').innerHTML = detailsHtml;
-                    document.getElementById('orderModal').classList.add('show');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error loading order details');
-                });
+  <!-- Order detail modal -->
+  <div id="modal" class="modal-bg" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModal()" aria-label="Close">&times;</button>
+      <h3>Order Details</h3>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    const TOKEN = localStorage.getItem('admin_token');
+    if (!TOKEN) { window.location.href = '/admin/login'; }
+
+    const admin = JSON.parse(localStorage.getItem('admin_user') || '{}');
+    document.getElementById('admin-name').textContent = admin.username || '—';
+    document.getElementById('admin-nav').style.display = 'flex';
+
+    document.getElementById('logout-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
+      window.location.href = '/admin/login';
+    });
+
+    const authHeaders = () => ({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + TOKEN,
+    });
+
+    async function loadOrders() {
+      try {
+        const res = await fetch('/api/admin/orders', { headers: authHeaders() });
+        if (res.status === 401 || res.status === 403) {
+          localStorage.removeItem('admin_token');
+          window.location.href = '/admin/login';
+          return;
         }
+        const data = await res.json();
+        renderOrders(data.orders);
+      } catch (err) {
+        document.getElementById('orders-container').innerHTML =
+          '<p style="text-align:center;color:#c00;padding:40px">Failed to load orders.</p>';
+      }
+    }
 
-        function closeModal() {
-            document.getElementById('orderModal').classList.remove('show');
-        }
+    function statusBadge(s) {
+      return `<span class="status ${s}">${s.toUpperCase()}</span>`;
+    }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('orderModal');
-            if (event.target == modal) {
-                modal.classList.remove('show');
-            }
-        }
-    </script>
+    function renderOrders(orders) {
+      const el = document.getElementById('orders-container');
+      if (!orders.length) {
+        el.innerHTML = '<div class="empty">No orders yet.</div>';
+        return;
+      }
+      let rows = orders.map(o => {
+        const date = new Date(o.created_at).toLocaleString();
+        let actions = `<button class="btn-sm btn-view" onclick="viewOrder(${o.id})">View</button>`;
+        if (o.status !== 'confirmed')
+          actions += ` <button class="btn-sm btn-confirm" onclick="setStatus(${o.id},'confirmed')">Confirm</button>`;
+        if (o.status !== 'completed' && o.status !== 'cancelled')
+          actions += ` <button class="btn-sm btn-complete" onclick="setStatus(${o.id},'completed')">Complete</button>`;
+        if (o.status !== 'cancelled')
+          actions += ` <button class="btn-sm btn-cancel" onclick="setStatus(${o.id},'cancelled')">Cancel</button>`;
+        actions += ` <button class="btn-sm btn-danger" onclick="deleteOrder(${o.id})">Delete</button>`;
+        return `<tr>
+          <td><span class="order-id">#${o.id}</span></td>
+          <td>${o.customer_name}</td>
+          <td>ETB ${o.total_price.toFixed(2)}</td>
+          <td>${o.quantity}</td>
+          <td>${statusBadge(o.status)}</td>
+          <td>${date}</td>
+          <td><div class="actions">${actions}</div></td>
+        </tr>`;
+      }).join('');
 
-    <!-- Add endpoint to get order details -->
+      el.innerHTML = `<table>
+        <thead><tr>
+          <th>ID</th><th>Customer</th><th>Total</th>
+          <th>Qty</th><th>Status</th><th>Date</th><th>Actions</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    }
+
+    async function setStatus(id, status) {
+      const res = await fetch(`/api/admin/orders/${id}/status`, {
+        method: 'PUT',
+        headers: authHeaders(),
+        body: JSON.stringify({ status }),
+      });
+      if (res.ok) loadOrders();
+      else alert('Failed to update status');
+    }
+
+    async function deleteOrder(id) {
+      if (!confirm('Delete this order permanently?')) return;
+      const res = await fetch(`/api/admin/orders/${id}`, {
+        method: 'DELETE', headers: authHeaders(),
+      });
+      if (res.ok) loadOrders();
+      else alert('Failed to delete order');
+    }
+
+    async function viewOrder(id) {
+      const res = await fetch(`/api/order/${id}`);
+      const data = await res.json();
+      const o = data.order;
+      const items = JSON.parse(o.items);
+      const itemsHtml = items.map(i =>
+        `<div class="item-line"><strong>${i.name}</strong> x${i.quantity || i.qty} — ETB ${(i.price * (i.quantity || i.qty)).toFixed(2)}</div>`
+      ).join('');
+      document.getElementById('modal-body').innerHTML = `
+        <div class="detail-row"><span class="detail-label">Order ID</span><span>#${o.id}</span></div>
+        <div class="detail-row"><span class="detail-label">Customer</span><span>${o.customer_name}</span></div>
+        <div class="detail-row"><span class="detail-label">Total</span><span>ETB ${o.total_price.toFixed(2)}</span></div>
+        <div class="detail-row"><span class="detail-label">Quantity</span><span>${o.quantity}</span></div>
+        <div class="detail-row"><span class="detail-label">Status</span><span>${o.status.toUpperCase()}</span></div>
+        <div class="detail-row"><span class="detail-label">Date</span><span>${new Date(o.created_at).toLocaleString()}</span></div>
+        <div style="margin-top:12px;font-weight:600;color:#555;margin-bottom:6px">Items:</div>
+        ${itemsHtml}
+      `;
+      document.getElementById('modal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+    }
+
+    window.addEventListener('click', (e) => {
+      if (e.target === document.getElementById('modal')) closeModal();
+    });
+
+    loadOrders();
+  </script>
 </body>
 </html>

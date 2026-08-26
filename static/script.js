@@ -415,6 +415,11 @@
       renderCart();
       updateBadge([]);
 
+      const orderIdEl = $("order-id-text");
+      if (orderIdEl && data.order) {
+        orderIdEl.textContent = `Your Order ID: #${data.order.id}`;
+      }
+
       $("order-modal")?.classList.add("is-open");
 
       console.log("Order created:", data.order);

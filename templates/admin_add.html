@@ -1,294 +1,252 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - Add Order</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-    <style>
-        body {
-            background-color: #f5f5f5;
-        }
-        .admin-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            border-bottom: 2px solid #d4af37;
-            padding-bottom: 20px;
-        }
-        .admin-header h1 {
-            font-size: 2.5rem;
-            color: #333;
-            font-family: "Playfair Display", serif;
-        }
-        .admin-header a {
-            background-color: #d4af37;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        .admin-header a:hover {
-            background-color: #b8941f;
-        }
-        .form-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-section {
-            margin-bottom: 30px;
-        }
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #d4af37;
-            padding-bottom: 10px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #d4af37;
-            box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
-        }
-        .menu-items {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .menu-item {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            transition: all 0.3s;
-        }
-        .menu-item:hover {
-            border-color: #d4af37;
-            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.2);
-        }
-        .menu-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 10px;
-        }
-        .menu-item-name {
-            font-weight: 600;
-            color: #333;
-            font-size: 1rem;
-        }
-        .menu-item-price {
-            color: #d4af37;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        .menu-item-desc {
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-        .quantity-input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            box-sizing: border-box;
-        }
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border: 1px solid #f5c6cb;
-        }
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border: 1px solid #c3e6cb;
-        }
-        .button-group {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-weight: 600;
-        }
-        .btn-submit {
-            background-color: #d4af37;
-            color: white;
-        }
-        .btn-submit:hover {
-            background-color: #b8941f;
-        }
-        .btn-cancel {
-            background-color: #999;
-            color: white;
-        }
-        .btn-cancel:hover {
-            background-color: #777;
-        }
-        .order-summary {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 6px;
-            margin-top: 20px;
-            border: 1px solid #ddd;
-        }
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-        .summary-row.total {
-            border-top: 2px solid #d4af37;
-            padding-top: 10px;
-            margin-top: 10px;
-            font-weight: 600;
-            color: #d4af37;
-        }
-        .summary-label {
-            font-weight: 600;
-            color: #333;
-        }
-        .summary-value {
-            color: #666;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Menu Items</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    body { background:#f5f5f5; }
+    .admin-wrap { max-width:1100px; margin:0 auto; padding:40px 20px; }
+    .admin-top {
+      display:flex; justify-content:space-between; align-items:center;
+      border-bottom:2px solid #d4af37; padding-bottom:18px; margin-bottom:32px;
+    }
+    .admin-top h1 { font-family:"Playfair Display",serif; font-size:2rem; color:#333; }
+    .btn-gold {
+      background:#d4af37; color:#fff; padding:9px 18px; border-radius:4px;
+      text-decoration:none; font-size:.85rem; font-weight:500; border:none; cursor:pointer;
+      text-transform:uppercase; letter-spacing:.06em; transition:background .2s;
+    }
+    .btn-gold:hover { background:#b8941f; }
+    .btn-danger {
+      background:#e53935; color:#fff; padding:6px 12px; border-radius:4px;
+      border:none; cursor:pointer; font-size:.8rem; transition:background .2s;
+    }
+    .btn-danger:hover { background:#c62828; }
+    .btn-edit {
+      background:#1976d2; color:#fff; padding:6px 12px; border-radius:4px;
+      border:none; cursor:pointer; font-size:.8rem; transition:background .2s;
+    }
+    .btn-edit:hover { background:#1565c0; }
+
+    /* Add form */
+    .card-form {
+      background:#fff; border-radius:8px; padding:28px 30px;
+      box-shadow:0 2px 10px rgba(0,0,0,.08); margin-bottom:36px;
+    }
+    .card-form h2 { font-family:"Playfair Display",serif; font-size:1.3rem; margin-bottom:20px; color:#333; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-group { display:flex; flex-direction:column; gap:5px; }
+    .form-group.full { grid-column:1/-1; }
+    .form-group label { font-size:.82rem; font-weight:500; color:#555; text-transform:uppercase; letter-spacing:.05em; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding:10px 12px; border:1px solid #ddd; border-radius:4px; font-size:.95rem;
+      transition:border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline:none; border-color:#111;
+    }
+    .form-group textarea { resize:vertical; min-height:70px; }
+    .form-actions { margin-top:20px; display:flex; gap:10px; }
+    .msg { padding:10px 14px; border-radius:4px; font-size:.88rem; margin-bottom:16px; display:none; }
+    .msg.ok  { background:#e8f5e9; color:#2e7d32; border:1px solid #c8e6c9; display:block; }
+    .msg.err { background:#fdecea; color:#c62828; border:1px solid #ffcdd2; display:block; }
+
+    /* Menu table */
+    table { width:100%; border-collapse:collapse; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,.08); }
+    thead { background:#222; color:#fff; }
+    th,td { padding:12px 14px; text-align:left; font-size:.88rem; }
+    td { border-bottom:1px solid #eee; }
+    tbody tr:hover { background:#fafafa; }
+    .actions { display:flex; gap:6px; }
+    .cat { display:inline-block; padding:2px 8px; border-radius:10px; font-size:.75rem; font-weight:600; background:#eee; color:#555; }
+  </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="{{ url_for('home') }}" class="logo">abyssinian meal</a>
-            <ul class="nav-links">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('admin_orders') }}">Admin Orders</a></li>
-                <li><a href="{{ url_for('admin_add') }}">Add Order</a></li>
-            </ul>
-        </div>
-    </nav>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('home') }}" class="logo">abyssinian meal</a>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('admin_orders_page') }}">Orders</a></li>
+        <li><a href="{{ url_for('admin_menu_page') }}">Menu Items</a></li>
+        <li><a href="#" id="logout-link">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
 
-    <div class="admin-container">
-        <div class="admin-header">
-            <h1>Add New Order</h1>
-            <a href="{{ url_for('admin_orders') }}">← Back to Orders</a>
-        </div>
-
-        <div class="form-container">
-            {% if error %}
-            <div class="error">{{ error }}</div>
-            {% endif %}
-
-            <form method="POST" action="{{ url_for('admin_add') }}">
-                <!-- Customer Information -->
-                <div class="form-section">
-                    <div class="section-title">Customer Information</div>
-                    <div class="form-group">
-                        <label for="customer_name">Customer Name *</label>
-                        <input type="text" id="customer_name" name="customer_name" required placeholder="Enter customer name">
-                    </div>
-                </div>
-
-                <!-- Menu Items Selection -->
-                <div class="form-section">
-                    <div class="section-title">Select Items</div>
-                    <div class="menu-items">
-                        {% for item in menu %}
-                        <div class="menu-item">
-                            <div class="menu-item-header">
-                                <div class="menu-item-name">{{ item.name }}</div>
-                                <div class="menu-item-price">${{ "%.2f"|format(item.price) }}</div>
-                            </div>
-                            <div class="menu-item-desc">{{ item.desc }}</div>
-                            <input type="number" name="qty_{{ item.id }}" class="quantity-input" 
-                                   placeholder="Qty" min="0" value="0" data-price="{{ item.price }}" 
-                                   data-name="{{ item.name }}" onchange="updateSummary()">
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!-- Order Summary -->
-                <div class="order-summary">
-                    <div class="summary-row">
-                        <span class="summary-label">Total Items:</span>
-                        <span class="summary-value" id="total-qty">0</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="summary-label">Total Price:</span>
-                        <span class="summary-value" id="total-price">$0.00</span>
-                    </div>
-                </div>
-
-                <!-- Submit Buttons -->
-                <div class="button-group" style="margin-top: 30px;">
-                    <a href="{{ url_for('admin_orders') }}" class="btn btn-cancel">Cancel</a>
-                    <button type="submit" class="btn btn-submit">Create Order</button>
-                </div>
-            </form>
-        </div>
+  <div class="admin-wrap">
+    <div class="admin-top">
+      <h1>Menu Management</h1>
+      <a href="{{ url_for('admin_orders_page') }}" class="btn-gold">View Orders</a>
     </div>
 
-    <script>
-        function updateSummary() {
-            let totalQty = 0;
-            let totalPrice = 0;
+    <!-- Add / Edit form -->
+    <div class="card-form">
+      <h2 id="form-title">Add New Menu Item</h2>
+      <div id="form-msg" class="msg"></div>
+      <form id="menu-form">
+        <input type="hidden" id="edit-id" value="" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="item_id">Item ID (slug)</label>
+            <input type="text" id="item_id" placeholder="e.g. grilled-lamb" required />
+          </div>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Item name" required />
+          </div>
+          <div class="form-group">
+            <label for="price">Price (ETB)</label>
+            <input type="number" id="price" step="0.01" min="0" placeholder="0.00" required />
+          </div>
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" required>
+              <option value="">— select —</option>
+              <option value="starters">Starters</option>
+              <option value="main-course">Main Course</option>
+              <option value="desserts">Desserts</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="img">Image path</label>
+            <input type="text" id="img" placeholder="img/imageN.png" required />
+          </div>
+          <div class="form-group full">
+            <label for="desc">Description</label>
+            <textarea id="desc" required></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-gold" id="submit-btn">Add Item</button>
+          <button type="button" class="btn-gold" id="reset-btn" style="background:#888" onclick="resetForm()">Clear</button>
+        </div>
+      </form>
+    </div>
 
-            document.querySelectorAll('.quantity-input').forEach(input => {
-                const qty = parseInt(input.value) || 0;
-                const price = parseFloat(input.getAttribute('data-price'));
-                totalQty += qty;
-                totalPrice += qty * price;
-            });
+    <!-- Menu table -->
+    <div id="menu-container">
+      <p style="text-align:center;color:#999;padding:30px">Loading…</p>
+    </div>
+  </div>
 
-            document.getElementById('total-qty').textContent = totalQty;
-            document.getElementById('total-price').textContent = '$' + totalPrice.toFixed(2);
+  <script>
+    const TOKEN = localStorage.getItem('admin_token');
+    if (!TOKEN) { window.location.href = '/admin/login'; }
+
+    document.getElementById('logout-link').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
+      window.location.href = '/admin/login';
+    });
+
+    const auth = () => ({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + TOKEN,
+    });
+
+    async function loadMenu() {
+      const res = await fetch('/api/menu');
+      const items = await res.json();
+      renderMenu(items);
+    }
+
+    function renderMenu(items) {
+      if (!items.length) {
+        document.getElementById('menu-container').innerHTML = '<p style="text-align:center;color:#999;padding:30px">No menu items.</p>';
+        return;
+      }
+      const rows = items.map(m => `
+        <tr>
+          <td>${m.id}</td>
+          <td>${m.item_id}</td>
+          <td><strong>${m.name}</strong></td>
+          <td>ETB ${m.price.toFixed(2)}</td>
+          <td><span class="cat">${m.category}</span></td>
+          <td class="actions">
+            <button class="btn-edit" onclick='editItem(${JSON.stringify(m)})'>Edit</button>
+            <button class="btn-danger" onclick="deleteItem(${m.id})">Delete</button>
+          </td>
+        </tr>`).join('');
+      document.getElementById('menu-container').innerHTML = `
+        <table>
+          <thead><tr><th>#</th><th>ID</th><th>Name</th><th>Price</th><th>Category</th><th>Actions</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }
+
+    function resetForm() {
+      document.getElementById('edit-id').value = '';
+      document.getElementById('menu-form').reset();
+      document.getElementById('form-title').textContent = 'Add New Menu Item';
+      document.getElementById('submit-btn').textContent = 'Add Item';
+      document.getElementById('item_id').disabled = false;
+      document.getElementById('form-msg').className = 'msg';
+    }
+
+    function editItem(m) {
+      document.getElementById('edit-id').value = m.id;
+      document.getElementById('item_id').value = m.item_id;
+      document.getElementById('item_id').disabled = true;
+      document.getElementById('name').value = m.name;
+      document.getElementById('price').value = m.price;
+      document.getElementById('category').value = m.category;
+      document.getElementById('img').value = m.img;
+      document.getElementById('desc').value = m.desc;
+      document.getElementById('form-title').textContent = 'Edit Menu Item';
+      document.getElementById('submit-btn').textContent = 'Save Changes';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.getElementById('menu-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const msgEl = document.getElementById('form-msg');
+      msgEl.className = 'msg';
+      const editId = document.getElementById('edit-id').value;
+      const payload = {
+        item_id:  document.getElementById('item_id').value.trim(),
+        name:     document.getElementById('name').value.trim(),
+        price:    parseFloat(document.getElementById('price').value),
+        category: document.getElementById('category').value,
+        img:      document.getElementById('img').value.trim(),
+        desc:     document.getElementById('desc').value.trim(),
+      };
+      try {
+        let res;
+        if (editId) {
+          res = await fetch(`/api/admin/menu/${editId}`, {
+            method:'PUT', headers:auth(), body:JSON.stringify(payload),
+          });
+        } else {
+          res = await fetch('/api/admin/menu', {
+            method:'POST', headers:auth(), body:JSON.stringify(payload),
+          });
         }
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error');
+        msgEl.textContent = editId ? 'Item updated.' : 'Item added.';
+        msgEl.className = 'msg ok';
+        resetForm();
+        loadMenu();
+      } catch (err) {
+        msgEl.textContent = err.message;
+        msgEl.className = 'msg err';
+      }
+    });
 
-        // Initialize summary on page load
-        updateSummary();
-    </script>
+    async function deleteItem(id) {
+      if (!confirm('Delete this menu item?')) return;
+      const res = await fetch(`/api/admin/menu/${id}`, {
+        method:'DELETE', headers:auth(),
+      });
+      if (res.ok) loadMenu();
+      else alert('Failed to delete item');
+    }
+
+    loadMenu();
+  </script>
 </body>
 </html>
